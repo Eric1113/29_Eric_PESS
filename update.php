@@ -27,6 +27,56 @@
 		$conn->close();
 	}
 
+	
+	$btnUpdateClicked = isset($_POST["btnUpdate"]);
+	if($btnUpdateClicked == true) {
+		$updateSuccess = false;
+		$conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD,DB_DATABASE);
+		$newStatusId = $_POST["carStatus"];
+		$carId = $_POST["PatrolCarId"];
+		
+		$sql="UPDATE `patrolcar` SET `patrolcar_status_id`=" . $newStatusId . " WHERE `patrolcar_id`='" . $carId . "'";
+		$updateSuccess = $conn->query($sql);
+		if($updateSuccess == false) {
+			echo "Error:" . $sql . "<br>" . $conn->error;
+			}
+		
+		if($newStatusId == 4){ //Arrived
+			$sql="UPDATE `dispatch` SET `time_arrived`= now() WHERE time_arrived is null and patrolcar_id = '" . $carId . "'";
+		$updateSuccess = $conn->query($sql);
+		if($updateSuccess == false) {
+			echo "Error:" . $sql . "<br>" . $conn->error;
+			}
+		}
+		else if ($newStatusId == 3) {
+			$sql="SELECT incident_id FROM `dispatch` WHERE time_completed is null and patrolcar_id='" . $carId . "'";
+		$result = $conn->query($sql);
+			$incidentId =0;
+			if($result->num_rows > 0) {
+				if($row = $result->fetch_assoc()){
+					$incidentId = $row["incident_id"];
+				}
+			}
+			$sql="UPDATE `dispatch` SET `time_completed`= now() WHERE time_completed is null and patrolcar_id = '" . $carId . "'";
+			$updateSuccess = $conn->query($sql);
+			
+				if($updateSuccess == false) {
+					echo "Error:" . $sql . "<br>" . $conn->error;
+			}
+			
+			$sql="UPDATE `incident` SET `incident_status_id`=3 WHERE incident_id = '" . $incidentId . "'";
+			$updateSuccess = $conn->query($sql);
+			
+				if($updateSuccess == false) {
+					echo "Error:" . $sql . "<br>" . $conn->error;
+			}
+		}
+		$conn->close();
+		
+		if($updateSuccess == true) {
+			header("location: search.php");
+		}
+	}
 
 ?>
 <!doctype html>
@@ -43,7 +93,7 @@
 	include "header.php";
 	?>
   <section class="mt-3">
-    <form>
+    <form action="<?php echo htmlentities($_SERVER["PHP_SELF"]) ?>" method="post">>
 		<?php
 			if($car != null) {
 				echo "<div class=\"form-group row\">
@@ -63,7 +113,11 @@
 					";
 					$selected = "";
 					foreach($statuses as $status){
-						echo "<option value=\"" . $status["id"] . "\">". $status["title"] ."</option>";
+						if($status["id"] == $car["statusId"]){
+							$selected = " selected=\"selected\"";
+						}
+						echo "<option value=\"" . $status["id"] . "\" " . $selected . ">". $status["title"] ."</option>";
+						$selected = "";
 					}
 					echo
 					"
@@ -76,7 +130,7 @@
 
 			  <div class=\"form-group row\">
 				<div class=\"offset-sm-4 col-sm-8\">
-				  <button type=\"submit\" class=\"btn btn-primary\" name=\"submit\" id=\"submit\">Update</button>
+				  <button type=\"submit\" class=\"btn btn-primary\" name=\"btnUpdate\" id=\"submit\">Update</button>
 				</div>
 			  </div>";
 			}
