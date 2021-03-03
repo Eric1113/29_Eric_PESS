@@ -26,7 +26,7 @@
 	include "header.php";
 	?>
   <section class="mt-3">
-    <form>
+    <form action="dispatch.php" method="post">
       <div class="form-group row">
         <label for="callerName" class="col-sm-4 col-form-label">Caller's name</label>
         <div class="col-sm-8">
@@ -67,7 +67,7 @@
       </div>
       <div class="form-group row">
         <div class="offset-sm-4 col-sm-8">
-          <button type="submit" class="btn btn-primary" name="submit" id="submit">Process Call</button>
+          <button type="submit" class="btn btn-primary" name="btnProcessCall" id="submit">Process Call</button>
         </div>
       </div>
       

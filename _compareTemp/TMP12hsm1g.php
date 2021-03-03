@@ -71,17 +71,6 @@
 				echo "Error:" . $sql . "<br>" . $conn->error;
 			}
 			
-			$sql = "INSERT INTO `dispatch`(`incident_id`, `patrolcar_id`, `time_dispatched`) VALUES (" . $incidentId . ",'" . $eachCarId . "',now())";
-			$insertDispatchSuccess = $conn->query($sql);
-			
-			if($insertDispatchSuccess == false) {
-				echo "Error:" . $sql . "<br>" . $conn->error;
-			}
-		}
-		$conn->close();
-		
-		if($insertDispatchSuccess == true && $updateSuccess == true && $insertDispatchSuccess == true) {
-			header("location: logcall.php");
 		}
 	}
 ?>
