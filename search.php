@@ -1,3 +1,18 @@
+<?php
+	session_start();
+	require_once "db.php";
+	$conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD,DB_DATABASE);
+	$sql = "SELECT patrolcar.patrolcar_id,patrolcar_status.patrolcar_status_desc FROM `patrolcar` INNER JOIN patrolcar_status ON patrolcar.patrolcar_status_id = patrolcar_status.patrolcar_status_id WHERE patrolcar_status.patrolcar_status_id = 1";
+	$result = $conn->query($sql);
+	$cars = [];
+	while($row = $result->fetch_assoc()){
+		$id = $row["patrolcar_id"];
+		$status = $row["patrolcar_status_desc"];
+		$car = ["id" => $id, "status" => $status];
+		array_push($cars,$car);
+	}
+	$conn->close();
+?>
 <!doctype html>
 <html>
 <head>
@@ -22,7 +37,24 @@
 			  <button type="submit" class="btn btn-primary" name="btnsearch" id="submit">Search</button>
 		  </div>
       </div>
-		
+		<div class="form-group row mt-5">
+			<div class="col-sm">
+				<table class="table table-striped table-bordered table-dark">
+					<tbody>
+						<tr>
+						<th>Car number</th>
+						<th>Status</th>
+						</tr>
+		<?php
+					foreach ($cars as $car)	{
+						echo "<tr>" .
+							"<td>" . $car["id"] . "</td>" .
+							"<td>" . $car["status"] . "</td>" .
+						"</tr>";
+				}
+			?>
+					</tbody>
+					</table>
     </form>
   </section>
 	<?php

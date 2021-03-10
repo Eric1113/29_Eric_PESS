@@ -1,5 +1,4 @@
-<header> <img src="image/banner.jpg" class="img-fluid" alt="PESS">
-	  <img src="image/images.jpg" class="img-fluid" alt="PESS">
+<header> <img src="image/banner1.jpg" class="img-fluid" alt="PESS">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent1">

@@ -1,4 +1,26 @@
 <?php
+	$has_Cookie_DisplayName = isset($_COOKIE["COOKIE_DisplayName"]);
+	if($has_Cookie_DisplayName == true)
+	{
+		$_cookie_DisplayName = $_COOKIE["COOKIE_DisplayName"];
+		echo "Welcome <strong>" . $_cookie_DisplayName . "!</strong> [<a href='logout.php'>Logout</a>]";
+	}
+	else 
+	{
+	if(isset($_SESSION) == false) {
+		session_start();
+	}
+	//check for session
+	$has_Session_Displayname = isset($_SESSION["SESS_DISPLAYNAME"]);
+	if($has_Session_Displayname == true)
+	{
+		$session_DisplayName = $_SESSION["SESS_DISPLAYNAME"];
+		echo "Welcome <strong>" . $session_DisplayName . "!</strong> [<a href='logout.php'>Logout</a>]";
+	}
+	else {
+		header("Location: login.php");
+	}
+}
 	require_once "db.php";
 	$conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD,DB_DATABASE);
 	$sql = "SELECT * FROM incident_type";
@@ -18,11 +40,10 @@
 <meta charset="utf-8">
 <title>Logcall</title>
 </head>
-
 <link rel="stylesheet" href="css/bootstrap-4.4.1.css">
 <body>
-<div class="container" style="width:900px">
-  <?php
+	<div class="container" style="width:900px">
+  	<?php
 	include "header.php";
 	?>
   <section class="mt-3">
