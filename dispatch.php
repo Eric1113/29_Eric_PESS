@@ -20,12 +20,13 @@
 
 	$btnDispatchClicked = isset($_POST["btnDispatch"]);
 	$btnProcessCallClicked = isset($_POST["btnProcessCall"]);
+	$insertIncidentSuccess = isset($_POST["IncidentSuccess"]);
 	if($btnDispatchClicked == false && $btnProcessCallClicked == false) {
 		header ("location: logcall.php");
 	}
 
 	if($btnDispatchClicked == true) {
-		$insertIncidentSuccess == false;
+		$insertIncidentSuccess = false;
 		$hasCarSelection = isset($_POST["cbCarSelection"]);
 		$patrolcarDispatched = [];
 		$numOfPatrolCarDispatched =0;
@@ -81,7 +82,7 @@
 		$conn->close();
 		
 		if($insertDispatchSuccess == true && $updateSuccess == true && $insertDispatchSuccess == true) {
-			header("location: logcall.php");
+			header("location: search.php");
 		}
 	}
 ?>
